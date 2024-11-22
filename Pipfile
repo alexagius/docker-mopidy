@@ -16,8 +16,6 @@ mopidy-local = "*"
 mopidy-mpd = "*"
 pyopenssl = "*"
 
-mopidy-mpd = "*"
-mopidy-local = "*"
 # These do not install correctly via pip...
 #mopidy-soundcloud = "*"
 #mopidy-spotify = "*"
