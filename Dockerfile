@@ -1,31 +1,47 @@
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 ######################################
 ########### Mopidy setup ###########
 
 COPY Pipfile Pipfile.lock /
 
+
 RUN set -ex \
     # Official Mopidy install for Debian/Ubuntu along with some extensions
     # (see https://docs.mopidy.com/en/latest/installation/debian/ )
- && apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+ && apt update \
+ && DEBIAN_FRONTEND=noninteractive apt install -y \
         curl \
         gnupg \
         python3-distutils \
- && curl -L https://bootstrap.pypa.io/get-pip.py | python3 - \
- && pip install pip pipenv \
- && curl -L https://apt.mopidy.com/mopidy.gpg | apt-key add - \
- && curl -L https://apt.mopidy.com/mopidy.list -o /etc/apt/sources.list.d/mopidy.list \
- && apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        python3-venv \
+        python3-pip \
+        pipx \
+        wget \
+ && pipx install pipenv \
+ && mkdir -p /etc/apt/keyrings \
+ && wget -q -O /etc/apt/keyrings/mopidy-archive-keyring.gpg \
+        https://apt.mopidy.com/mopidy.gpg \
+ && wget -q -O /etc/apt/sources.list.d/mopidy.list https://apt.mopidy.com/bookworm.list \
+ && wget -q -O - https://apt.mopidy.com/mopidy.gpg | apt-key add - \
+ && apt update
+
+RUN set -ex \
+    # Official Mopidy install for Debian/Ubuntu along with some extensions
+    # (see https://docs.mopidy.com/en/latest/installation/debian/ )
+ && apt update \
+ && pip3 config set global.break-system-packages true \
+ && DEBIAN_FRONTEND=noninteractive apt install -y \
         mopidy \
+        mopidy-mpd \
         mopidy-soundcloud \
-        mopidy-spotify \
+    # Spotify is seemingly not a pacakge anymore
+ && pip3 install Mopidy-Spotify==5.0.0a3 \
+ && pip3 install pipenv \
  && pipenv install --system --deploy \
- && apt-get purge --auto-remove -y \
+ && apt purge --auto-remove -y \
         gcc \
- && apt-get clean \
+ && apt clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 ##  Copy fallback configuration.
@@ -48,15 +64,15 @@ ARG SNAPCASTVERSION=0.23.0
 ARG SNAPCASTDEP_SUFFIX=-1
 
 # Download snapcast package
-RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+RUN apt update \
+ && DEBIAN_FRONTEND=noninteractive apt install -y \
         libavahi-client3 \
         libavahi-common3 \
         libsoxr0 \
  && curl -LO 'https://github.com/badaix/snapcast/releases/download/v'$SNAPCASTVERSION'/snapserver_'$SNAPCASTVERSION$SNAPCASTDEP_SUFFIX'_amd64.deb' \
  && dpkg -i --force-all 'snapserver_'$SNAPCASTVERSION$SNAPCASTDEP_SUFFIX'_amd64.deb' \
  && apt -f install -y \
- && apt-get clean \
+ && apt clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
 # Create config directory
@@ -70,8 +86,8 @@ EXPOSE 1704
 
 # https://docs.docker.com/config/containers/multi-service_container/
 
-RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y supervisor \
+RUN apt update \
+ && DEBIAN_FRONTEND=noninteractive apt install -y supervisor \
  && mkdir -p /var/log/supervisor \
  && apt clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
