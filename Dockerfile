@@ -48,6 +48,7 @@ RUN set -ex \
 COPY mopidy.conf /etc/default/mopidy.conf
 
 #  Copy default configuration.
+RUN rm /etc/mopidy/mopidy.conf
 COPY mopidy.conf /etc/mopidy/mopidy.conf
 
 ## Copy the pulse-client configuratrion.
