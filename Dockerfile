@@ -60,7 +60,7 @@ EXPOSE 6600 6680 5555/udp
 # https://docs.docker.com/config/containers/multi-service_container/
 
 # Taken and adapted from: https://github.com/nolte/docker-snapcast/blob/master/DockerfileServerX86
-ARG SNAPCASTVERSION=0.23.0
+ARG SNAPCASTVERSION=0.29.0
 ARG SNAPCASTDEP_SUFFIX=-1
 
 # Download snapcast package
