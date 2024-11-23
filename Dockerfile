@@ -77,6 +77,9 @@ RUN apt update \
 
 # Create config directory
 RUN mkdir -p /root/.config/snapcast/
+# copy configuration
+COPY snapserver.conf /etc/snapserver.conf
+COPY snapserver.conf /root/.config/snapcast/snapserver.conf
 
 ## Expose TCP port used to stream audio data to snapclient instances
 EXPOSE 1704
