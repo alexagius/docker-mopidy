@@ -107,6 +107,8 @@ COPY supervisord.conf /etc/supervisord.conf
 #WORKDIR /home/$user
 #
 
+RUN cat /etc/mopidy/mopidy.conf
+
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 
 HEALTHCHECK --interval=5s --timeout=2s --retries=20 \
