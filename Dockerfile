@@ -44,6 +44,14 @@ RUN set -ex \
  && apt clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
+# custom gst-plugin for spotify
+# see: https://github.com/mopidy/mopidy-spotify/releases/tag/v5.0.0a3
+RUN curl -LO 'https://github.com/kingosticks/gst-plugins-rs-build/releases/download/gst-plugin-spotify_0.14.0-alpha.1-1/gst-plugin-spotify_0.14.0.alpha.1-1_amd64.deb' \
+ && dpkg -i --force-all 'gst-plugin-spotify_0.14.0.alpha.1-1_amd64.deb' \
+ && apt -f install -y \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
+
 ##  Copy fallback configuration.
 COPY mopidy.conf /etc/default/mopidy.conf
 
