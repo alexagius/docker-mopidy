@@ -69,7 +69,7 @@ RUN apt update \
         libavahi-client3 \
         libavahi-common3 \
         libsoxr0 \
- && curl -LO 'https://github.com/badaix/snapcast/releases/download/v'$SNAPCASTVERSION'/snapserver_'$SNAPCASTVERSION$SNAPCASTDEP_SUFFIX'_amd64.deb' \
+ && curl -LO 'https://github.com/badaix/snapcast/releases/download/v'$SNAPCASTVERSION'/snapserver_'$SNAPCASTVERSION$SNAPCASTDEP_SUFFIX'_amd64_bookworm.deb' \
  && dpkg -i --force-all 'snapserver_'$SNAPCASTVERSION$SNAPCASTDEP_SUFFIX'_amd64.deb' \
  && apt -f install -y \
  && apt clean \
