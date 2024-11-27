@@ -84,6 +84,21 @@ RUN apt update \
  && apt clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
+# Install packages required for librespot
+RUN  apt update \
+ && DEBIAN_FRONTEND=noninteractive apt install -y \
+        build-essential \
+        libasound2-dev \
+        pkg-config \
+ && apt clean \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
+
+# Install librespot
+ENV PATH="/root/.cargo/bin:${PATH}"
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y \
+    && export PATH="/root/.cargo/bin:$PATH" \
+    && cargo install librespot
+
 # Create config directory
 RUN mkdir -p /root/.config/snapcast/
 # copy configuration
