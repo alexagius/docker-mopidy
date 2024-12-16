@@ -43,7 +43,7 @@ jobs:
       - name: Login to DockerHub Registry
         run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
       - name: Push the Docker image
-        run: docker push markusressel/mopidy:latest
+        run: docker push aagius/mopidy:latest
 
   # Push image to GitHub Packages. xx
   # See also https://docs.docker.com/docker-hub/builds/
