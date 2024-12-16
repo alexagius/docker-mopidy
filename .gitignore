@@ -1,3 +1,4 @@
 npm-debug.log
 venv
-.idea
+.idea!
+/mopidy-test.conf
