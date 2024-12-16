@@ -35,9 +35,9 @@ RUN set -ex \
         mopidy \
         mopidy-mpd \
         mopidy-soundcloud \
-        mopidy-jellyfin \
     # Spotify is seemingly not a pacakge anymore
  && pip3 install Mopidy-Spotify==5.0.0a3 \
+ && pip3 install Mopidy-Jellyfin==1.0.5 \
  && pip3 install pipenv \
  && pipenv install --system --deploy \
  && apt purge --auto-remove -y \
